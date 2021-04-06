@@ -13,7 +13,8 @@ session=DBsession()
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
-    return "This page will show all my restaurants"
+    restaurantList=session.query(Restaurant).all()
+    return render_template('restaurants.html',restaurants=restaurantList)
 
 @app.route('/restaurant/new')
 def newRestaurant():
