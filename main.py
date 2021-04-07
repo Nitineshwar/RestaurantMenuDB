@@ -1,4 +1,4 @@
-from flask import Flask,redirect,render_template,url_for,jsonify
+from flask import Flask,redirect,render_template,url_for,jsonify,request
 app=Flask(__name__)
 
 from sqlalchemy import create_engine
@@ -16,9 +16,15 @@ def showRestaurants():
     restaurantList=session.query(Restaurant).all()
     return render_template('restaurants.html',restaurants=restaurantList)
 
-@app.route('/restaurant/new')
+@app.route('/restaurant/new', methods=['GET','POST'])
 def newRestaurant():
-    return "This page will be for making new restaurant"
+    if request.method=="POST":
+        newRestItem=Restaurant(name=request.form['name'])
+        session.add(newRestItem)
+        session.commit()
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('newRestaurant.html')
 
 @app.route('/restaurant/<int:restaurant_id>/edit')
 def editRestaurant(restaurant_id):
