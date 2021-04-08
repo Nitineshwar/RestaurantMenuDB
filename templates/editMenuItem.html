@@ -1,0 +1,44 @@
+<html>
+    <h1>Edit {{ i.name }} </h1>
+    <body>
+        <form action="{{ url_for('editMenuItem',restaurant_id=restaurant_id,menu_id=i.id)}}" method="POST">
+            <dl>
+                <dt>Name:</dt></br>
+                <dd><input type="text" size="30" name="name" placeholder="{{i.name}}"> </dd></br>
+
+                <dt>Description:</dt></br>
+                <dd> <textarea rows="5" cols="30" name="description" placeholder="{{i.description}}"></textarea>  </dd></br>
+
+                <dt>Price:</dt></br>
+                <dd><input type="text" size="15" name="price" placeholder="{{i.price}}">  </dd></br>
+
+                <dt>Course:</dt></br>
+                {% if i.course=="Appetizer" %}
+                    <dd> <input type="radio"  name="course" value="Appetizer" checked> Appetizer </dd>
+                {% else %}
+                    <dd> <input type="radio"  name="course" value="Appetizer" > Appetizer </dd>
+                {% endif %}
+
+                {% if i.course=="Beverage" %}
+                    <dd> <input type="radio"  name="course" value="Beverage" checked> Beverage </dd>
+                {% else %}
+                    <dd> <input type="radio"  name="course" value="Beverage" > Beverage </dd>
+                {% endif %}
+
+                {% if i.course=="Dessert" %}
+                    <dd> <input type="radio"  name="course" value="Dessert" checked> Dessert </dd>
+                {% else %}
+                    <dd> <input type="radio"  name="course" value="Dessert" > Dessert </dd>
+                {% endif %}
+
+                {% if i.course=="Entree" %}
+                    <dd> <input type="radio"  name="course" value="Entree" checked> Entree </dd>
+                {% else %}
+                    <dd> <input type="radio"  name="course" value="Entree" > Entree </dd>
+                {% endif %}
+            </dl>
+            <input type="submit" value="Edit" >
+        </form>
+        <a href="{{url_for('showMenu',restaurant_id=restaurant_id)}}"> Cancel</a>
+    </body>
+</html>
