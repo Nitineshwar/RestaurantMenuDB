@@ -112,5 +112,23 @@ def deleteMenuItem(restaurant_id,menu_id):
     else:
         return render_template('deleteMenuItem.html',i=itemToDelete)
 
+### ---- Adding API endpoints (GET Requests) ---###
+
+@app.route('/restaurants/JSON')
+def showRestaurantsJSON():
+    restaurantList=session.query(Restaurant).all()
+    return jsonify(Restaurants=[r.serialize for r in restaurantList])
+
+@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
+def showMenuJSON(restaurant_id):
+    restaurant=session.query(Restaurant).filter_by(id=restaurant_id).one()
+    items=session.query(MenuItem).filter_by(restaurant_id=restaurant.id).all()
+    return jsonify(MenuItems=[i.serialize for i in items])
+
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def showMenuItemJSON(restaurant_id,menu_id):
+    menuItem=session.query(MenuItem).filter_by(id=menu_id,restaurant_id=restaurant_id).one()
+    return jsonify(MenuItem=menuItem.serialize)
+
 if __name__=="__main__":
     app.run('0.0.0.0',port=5000,debug=True)
