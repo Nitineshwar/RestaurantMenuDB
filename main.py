@@ -10,11 +10,15 @@ Base.metadata.bind=engine
 DBsession=sessionmaker(bind=engine)
 session=DBsession()
 
+### ---- show the Restaurants/homepage ---- ###
+
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
     restaurantList=session.query(Restaurant).all()
     return render_template('restaurants.html',restaurants=restaurantList)
+
+### ---- Create a new Restaurant ---- ##
 
 @app.route('/restaurant/new', methods=['GET','POST'])
 def newRestaurant():
@@ -25,6 +29,8 @@ def newRestaurant():
         return redirect(url_for('showRestaurants'))
     else:
         return render_template('newRestaurant.html')
+
+### ---- Edit a Restaurant ---- ##        
 
 @app.route('/restaurant/<int:restaurant_id>/edit', methods=['GET','POST'])
 def editRestaurant(restaurant_id):
@@ -37,6 +43,7 @@ def editRestaurant(restaurant_id):
     else:
         return render_template('editRestaurant.html',restaurant_id=restaurant_id,r=editRestItem)
 
+### ---- Delete a  Restaurant ---- ##
 
 @app.route('/restaurant/<int:restaurant_id>/delete', methods=['GET','POST'])
 def deleteRestaurant(restaurant_id):
@@ -48,12 +55,16 @@ def deleteRestaurant(restaurant_id):
     else:
         return render_template('deleteRestaurant.html',restaurant=delRestItem)
 
+### ---- Display menu of a restaurant ---- ##
+
 @app.route('/restaurant/<int:restaurant_id>/')
 @app.route('/restaurant/<int:restaurant_id>/menu')
 def showMenu(restaurant_id):
     restaurant=session.query(Restaurant).filter_by(id=restaurant_id).one()
     items=session.query(MenuItem).filter_by(restaurant_id=restaurant.id).all()
     return render_template("menu.html",restaurant=restaurant,items=items)
+
+### ---- Creant a new menu item ---- ##
 
 @app.route('/restaurant/<int:restaurant_id>/menu/new',methods=["GET","POST"])
 def newMenuItem(restaurant_id):
@@ -68,6 +79,8 @@ def newMenuItem(restaurant_id):
         return redirect(url_for('showMenu',restaurant_id=restaurant_id))
     else :
         return render_template('newMenuItem.html',restaurant_id=restaurant_id)
+
+### ---- Edit a menu item ---- ##        
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit',methods=["GET","POST"])
 def editMenuItem(restaurant_id,menu_id):
@@ -86,6 +99,8 @@ def editMenuItem(restaurant_id,menu_id):
         return redirect(url_for('showMenu',restaurant_id=restaurant_id))
     else:
         return render_template('editMenuItem.html',restaurant_id=restaurant_id,i=editItem)
+
+### ---- Delete a menu item ---- ##        
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete',methods=["GET","POST"])
 def deleteMenuItem(restaurant_id,menu_id):
