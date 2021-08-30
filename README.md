@@ -1,1 +1,1 @@
-A  Restaurant website created with Flask that can perform basic CRUD operations on a database using SQLAlchemy.
+A  website created with Flask, that can perform  CRUD operations using SQLAlchemy on database of restaurants and its menu items  .
